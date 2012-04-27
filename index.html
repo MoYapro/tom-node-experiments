@@ -8,11 +8,11 @@
 
 
     <script type="text/javascript" src="jquery-1.4.4.min.js"></script>
-    <script type="text/javascript" src="script.js"></script>
+    <script type="text/javascript" src="client.js"></script>
 
     <script type="text/javascript">
         var sendMsg = function(msg) {
-            socket.send(msg);
+            socket.emit('message', msg);
         };
 
     </script>

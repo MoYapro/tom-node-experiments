@@ -12,7 +12,8 @@ io.on('connection', function(client){
         console.log('client send a message: ', message);
         client.send('OK');
         buffer.push(message);
-        client.emit('getNewMessage', buffer);
+        client.broadcast.emit('newMessage', buffer);
+        client.emit('newMessage', buffer);
 
     });
 

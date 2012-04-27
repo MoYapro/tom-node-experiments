@@ -17,6 +17,10 @@ io.on('connection', function(client){
 
     });
 
+    client.on('positionChanged', function(data) {
+        client.broadcast.emit('newPosition', data);
+    });
+
     client.on('disconnect', function(){
         console.log('client disconnected');
     });

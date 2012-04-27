@@ -10,9 +10,9 @@ io.on('connection', function(client){
 
     client.on('message', function(message){
         console.log('client send a message: ', message);
-        client.send('OK');
+        
         buffer.push(message);
-        client.broadcast.emit('newMessage', buffer);
+        client.broadcast.emit('newMessage', message);
         client.emit('newMessage', buffer);
 
     });

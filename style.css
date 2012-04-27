@@ -1,0 +1,13 @@
+.class {
+    float: left;
+}
+
+
+
+span{
+    border: 2px solid red;
+    background-color: blue;
+    height: 100px;
+    width: 150px;
+    display: inline-block;
+}

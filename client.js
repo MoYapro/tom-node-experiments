@@ -1,4 +1,4 @@
-var socket = io.connect('http://localhost:8080');
+var socket = io.connect('http://localhost:8081');
 
 
 socket.on('message', function (data) {
@@ -19,6 +19,11 @@ socket.on('newPosition', function(data) {
 	applyPosition(data);
 });
 
+socket.on('newElement', function(data) {
+	console.log('newElement', data);
+	insertNewElement(data);
+});
+
 var getPos = function(e) {
 	tempX = e.pageX
 	tempY = e.pageY
@@ -35,6 +40,44 @@ var applyPosition = function(args) {
 	 
 	element.css({'top' : args.y, 'left' : args.x});
 };
+
+var parseElementString = function(elementString) {
+	var element = $(elementString.tag);
+	element.addClass(elementString.class);
+	element.attr('style', elementString.style);
+	element.attr('id', elementString.id);
+
+	return element;
+};
+
+var insertNewElement = function(args) {
+	console.log('got new element from server', args);
+	var parent;
+	if(!args.parentId) {
+		parent = $('body');
+	} else {
+		parent = $('#' + args.parentId);
+	}
+
+	console.log('newElement is: ', args.newElement);
+
+	parent.append(parseElementString(args.newElement));
+};
+
+var addElement = function() {
+
+var newElement = {
+		'tag' 	: '<div/>',
+		'class' : 'dragable',
+		'style' : 'background-color: red; width: 150px; height: 150px',
+		'id'	: 'x' + new Date().getTime()
+	};
+
+	var data = {'parentId': null, 'newElement' : newElement};
+	socket.emit('newElement', data);
+	//insertNewElement(data);
+};
+
 
 $('.dragable').live('mousedown', function(event) {
 	event.preventDefault();
@@ -58,6 +101,24 @@ $('.dragable').live('mousedown', function(event) {
 		$this.unbind('mouseup');
 		$(document).unbind('mousemove');
 	});
+});
+
+
+
+var initClientGUI = function() {
+	console.log('start build gui');
+	var panel = $('<div class="panel"/>');
+	panel.append($('<button onclick="addElement();">Add</button>'));
+
+
+	$('body').append(panel);
+	console.log('done build gui');
+};
+
+
+
+$(document).ready(function() {
+initClientGUI();
 });
 
 console.log('loaded client');

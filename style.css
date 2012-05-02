@@ -11,3 +11,16 @@ span{
     width: 150px;
     display: inline-block;
 }
+
+body {
+	height: 100%;
+}
+
+.panel {
+	width: 150px;
+	height: 100%;
+	border: 2px solid black;
+	position: fixed;
+	right: 0px;
+	top: 0px;
+}

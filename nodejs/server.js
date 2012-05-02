@@ -1,5 +1,5 @@
 var http = require("http");
-var io = require('socket.io').listen(8080);
+var io = require('socket.io').listen(8081);
 
 var buffer = [];
 
@@ -19,6 +19,12 @@ io.on('connection', function(client){
 
     client.on('positionChanged', function(data) {
         client.broadcast.emit('newPosition', data);
+    });
+
+    client.on('newElement', function(data) {
+        console.log('newElement', data);
+        client.broadcast.emit('newElement', data);
+        client.emit('newElement', data);
     });
 
     client.on('disconnect', function(){
